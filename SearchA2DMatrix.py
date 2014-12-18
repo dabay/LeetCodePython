@@ -1,52 +1,46 @@
 # -*- coding: utf8 -*-
 '''
-Given an array with n objects colored red, white or blue, sort them so that objects of the same color are adjacent,
-with the colors in the order red, white and blue.
-
-Here, we will use the integers 0, 1, and 2 to represent the color red, white, and blue respectively.
-
-Note:
-You are not suppose to use the library's sort function for this problem.
-
-Follow up:
-A rather straight forward solution is a two-pass algorithm using counting sort.
-First, iterate the array counting number of 0's, 1's, and 2's, then overwrite array with total number of 0's,
-then 1's and followed by 2's.
-
-Could you come up with an one-pass algorithm using only constant space?
+Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has the following properties:
+    *   Integers in each row are sorted from left to right.
+    *   The first integer of each row is greater than the last integer of the previous row.
+For example,
+Consider the following matrix:
+[
+  [1,   3,  5,  7],
+  [10, 11, 16, 20],
+  [23, 30, 34, 50]
+]
+Given target = 3, return true.
 '''
 
 class Solution:
-    # @param A a list of integers
-    # @return nothing, sort in place
-    def sortColors(self, A):
-        def jump(A, index, jump_to):
-            to_insert = A[index]
-            for i in xrange(jump_to, index + 1):
-                (A[i], to_insert) = (to_insert, A[i])
+    # @param matrix, a list of lists of integers
+    # @param target, an integer
+    # @return a boolean
+    def searchMatrix(self, matrix, target):
+        search_row_index = 0
+        for r in xrange(len(matrix)):
+            if matrix[r][0] == target:
+                return True
+            elif matrix[r][0] > target:
+                break
+            else:
+                search_row_index = r
 
-
-        last_0_index = -1
-        last_1_index = -1
-        for i in xrange(len(A)):
-            if A[i] == 0:
-                jump(A, i, last_0_index + 1)
-                last_0_index = last_0_index + 1
-                last_1_index = last_1_index + 1
-            elif A[i] == 1:
-                jump(A, i, last_1_index + 1)
-                last_1_index = last_1_index + 1
+        for c in xrange(1, len(matrix[0])):
+            if matrix[search_row_index][c] == target:
+                return True
+            elif matrix[search_row_index][c] > target:
+                return False
             else:
                 continue
+
+        return False
 
 
 if __name__ == "__main__":
     s = Solution()
-    color_list = [0,1,2,0,1,0,2,0]
-    s.sortColors(color_list)
-    print color_list
-
-
-
-
-  
+    matrix = [
+      [1]
+    ]
+    print s.searchMatrix(matrix, 1)
