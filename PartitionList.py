@@ -20,40 +20,25 @@ class Solution:
     # @param x, an integer
     # @return a ListNode
     def partition(self, head, x):
-        if hea
-        pointer = head
-        less_start = None
-        less_end = None
-        greater_start = None
-        greater_end = None
-        while pointer is not None:
-            print pointer.val
-            if pointer.val >= x:
-                next_pointer = pointer.next
-                #add_to_greater(pointer)
-                if greater_start is None:
-                    greater_start = pointer
-                    greater_end = pointer
-                    #greater_end.next = None
-                else:
-                    greater_end.next = pointer
-                    greater_end = pointer
-                    #greater_end.next = None
+        new_head = ListNode(-1)
+        new_head.next = head
+        pointer = new_head
+        less_end = new_head
 
-                pointer = next_pointer
-            else:
-                next_pointer = pointer.next
-                #add_to_less(pointer)
-                if less_start is None:
-                    less_start = pointer
+        while pointer.next is not None:
+            if pointer.next.val < x:
+                if less_end == pointer:
+                    pointer = pointer.next
                     less_end = pointer
                 else:
-                    less_end.next = pointer
-                    less_end = pointer
-                pointer = next_pointer
-        greater_end.next = None
-        less_end.next = greater_start
-        return less_start
+                    to_insert = pointer.next
+                    pointer.next = pointer.next.next
+                    to_insert.next = less_end.next
+                    less_end.next = to_insert
+                    less_end = to_insert
+            else:
+                pointer = pointer.next
+        return new_head.next
 
 
 if __name__ == "__main__":
