@@ -21,5 +21,5 @@ if __name__ == "__main__":
     s = Solution()
     n = 30
     print s.trailingZeroes(n)
-    import math
+    #import math
     #print math.factorial(n)
