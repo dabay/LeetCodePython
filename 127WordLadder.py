@@ -28,15 +28,16 @@ class Solution:
     # @param dict, a set of string
     # @return an integer
     def ladderLength(self, start, end, dict):
-        def find_next_transformations(word, dict, passed):
+        def find_next_transformations(word, dict):
             transformations = []
+            to_del = []
             for i in xrange(len(word)):
                 for w in dict:
-                    if (word[:i] + word[i+1:] == w[:i] + w[i+1:]) and word != w and (w not in transformations) and w not in passed:
-                        # print i
-                        # print world[:i] + world[i+1:]
-                        # print w[:i] + w[i+1:]
+                    if (word[:i] + word[i+1:] == w[:i] + w[i+1:]) and word != w and (w not in transformations):
                         transformations.append(w)
+                        to_del.append(w)
+            for w in to_del:
+                dict.remove(w)
             return transformations
 
         def can_trans(trans_list, end):
@@ -49,16 +50,13 @@ class Solution:
         counter = 0
         trans = [start]
         next_trans = []
-        passed = []
         while can_trans(trans, end) is False:
-            passed = passed + next_trans
             next_trans = []
             for word in trans:
-                next_trans = next_trans + find_next_transformations(word, dict, passed)
+                next_trans = next_trans + find_next_transformations(word, dict)
             if len(next_trans) == 0:
                 return 0
             trans = next_trans
-            print next_trans
             counter = counter + 1
 
         return counter + 2
