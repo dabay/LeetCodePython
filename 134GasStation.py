@@ -17,12 +17,18 @@ class Solution:
     # @param cost, a list of integers
     # @return an integer
     def canCompleteCircuit(self, gas, cost):
-        def canComplateCircuit2(gas, cost):
-            left = gas[0] - cost[0]
-            for i in xrange(1, len(gas)):
+        def canComplateCircuit2(start):
+            left = gas[start] - cost[start]
+            for i in xrange(start+1, len(gas)):
                 if left < 0:
                     return False
                 left = left + gas[i] - cost[i]
+
+            for i in xrange(start):
+                if left < 0:
+                    return False
+                left = left + gas[i] - cost[i]
+
             if left < 0:
                 return False
             else:
@@ -31,7 +37,7 @@ class Solution:
         for i in xrange(len(gas)):
             if gas[i] < cost[i]:
                 continue
-            if canComplateCircuit2(gas[i:] + gas[:i], cost[i:] + cost[:i]):
+            if canComplateCircuit2(i):
                 return i
         return -1
 
