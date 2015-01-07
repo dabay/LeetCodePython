@@ -17,13 +17,15 @@ class Solution:
     # @param head, a ListNode
     # @return a boolean
     def hasCycle(self, head):
-        count = 0
-        node = head
-        while node is not None:
-            if count > 10000:
+        if head is None:
+            return False
+        slow = head
+        fast = head.next
+        while slow and fast and fast.next:
+            if slow == fast:
                 return True
-            node = node.next
-            count = count + 1
+            slow = slow.next
+            fast = fast.next.next
         return False
 
 
