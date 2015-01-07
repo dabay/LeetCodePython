@@ -18,28 +18,28 @@ class Solution:
         if len(s) == 0:
             return False
 
-        for d in dict:
+        possible = [False for _ in xrange(len(s))]
+        if s[0] in dict:
+            possible[0] = True
+        for i in xrange(1, len(s)):
+            if s[:i+1] in dict:
+                possible[i] = True
+                continue
+            for j in xrange(i+1):
+                if possible[j] == False:
+                    continue
+                if s[j+1:i+1] in dict:
+                    possible[i] = True
+                    break
+        return possible[-1]
 
-
-        result = False
-        max_word_length = max([len(word) for word in dict])
-        #print max_word_length
-        for i in xrange(max_word_length, 0, -1):
-            if s[:i] in dict:
-                if i == len(s):
-                    return True
-                else:
-                    result = result | self.wordBreak(s[i:], dict)
-            if result is True:
-                break
-        return result
 
 
 def main():
     s = Solution()
-    string = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab"
-    #dict = ["a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa"]
-    dict = ["a"]
+    string = "aaaaaaa"
+    dict = ["aaaa","aa"]
+    #dict = ["a"]
     print s.wordBreak(string, dict)
 
 
