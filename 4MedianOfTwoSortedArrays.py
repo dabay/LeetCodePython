@@ -6,7 +6,9 @@ There are two sorted arrays A and B of size m and n respectively. Find the media
 The overall run time complexity should be O(log (m+n)).
 
 ===Comments by Dabay===
-这道题
+先计算中位数在合并后数组中的什么坐标为medium_pos。
+同时考虑到，合并后数组的元素总数是奇数偶数的不同情况，用一个变量last来记录寻找到中位数的游标停下来的位置。
+如果是奇数，这个last没有用；如果是偶数，用这个last和下一个可能的数求一个平均数。
 '''
 
 class Solution:
@@ -46,6 +48,7 @@ class Solution:
                 return B[j]
             elif j == len_b:
                 return A[i]
+
 
 def main():
     s = Solution()
