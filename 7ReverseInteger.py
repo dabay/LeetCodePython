@@ -14,19 +14,46 @@ If the integer's last digit is 0, what should the output be? ie, cases such as 1
 Did you notice that the reversed integer might overflow? Assume the input is a 32-bit integer, then the reverse of
 1000000003 overflows. How should you handle such cases?
 For the purpose of this problem, assume that your function returns 0 when the reversed integer overflows.
+
+===Comments by Dabay===
+先简单是否是负数，用minus来记录。
+然后把字符串reverse。
+最后检查是否越界。
 '''
 class Solution:
     # @return an integer
     def reverse(self, x):
-        int_str = str(x)
-        new_int = 0
-        for i in range(len(int_str)-1, -1, -1):
-            if int_str[i] in "0123456789":
-                new_int = new_int * 10 + int(int_str[i])
-                continue
-            if int_str[i] == "-":
-                new_int = new_int * -1
-                break
-        if new_int > 2147483647 or new_int < -2147483647:
-            new_int = 0
-        return new_int
+        if len(x) <= 1:
+            return x
+        x = str(x)
+        minus = False
+        if x[0] == '-':
+            minus = True
+            x = x[1:]
+        stack = []
+        for n in x:
+            stack.append(n)
+        ret = ""
+        while len(stack) > 0:
+            ret = ret + stack.pop()
+        ret = int(ret)
+        if minus:
+            ret = ret * -1
+            if ret < -2147483647:
+                return 0
+        else:
+            if ret > 2147483647:
+                return 0
+        return ret
+
+
+def main():
+    s = Solution()
+    print s.reverse("-2147483648")
+
+
+if __name__ == "__main__":
+    import time
+    start = time.clock()
+    main()
+    print "%s sec" % (time.clock() - start)
