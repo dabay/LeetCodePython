@@ -33,10 +33,8 @@ class Solution:
     def convert(self, s, nRows):
         if nRows == 1:
             return s
-        array2d = []
-        for n in range(0, nRows):
-            array2d.append([])
-        for i in range(0, len(s)):
+        array2d = [[] for _ in xrange(nRows)]
+        for i in xrange(len(s)):
             mod = i % (2*nRows-2)
             if mod <= nRows-1:
                 array2d[mod].append(s[i])
@@ -44,8 +42,8 @@ class Solution:
                 x = 2*nRows - mod -2
                 array2d[x].append(s[i])
         val = ""
-        for n in range(0, nRows):
-            for v in array2d[n]:
+        for row in array2d:
+            for v in row:
                 val = val + v
         return val
 
