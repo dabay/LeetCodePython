@@ -21,7 +21,19 @@ isMatch("aa", ".*") → true
 isMatch("ab", ".*") → true
 isMatch("aab", "c*a*b") → true
 
-不知道大家得用多长时间来解决这个题呀？这个题放在面试中，不得急死人啊...
+===Comments by Dabay===
+自我感觉很解得很垃圾啊。如果不是把p做了压缩还过不了online judge。
+
+当s和p都是空的时候，匹配成功。
+如果s为空，p不为空，检查p的偶数为是不是都是*。
+
+如果s和p都不为空，头一个字母
+    如果不匹配，
+        不带*，False
+        带*，递归p[2:]
+    如果匹配，
+        不带*，递归s[1:],p[1:]
+        带*，考虑匹配0到最远端的情况，分别递归s[i:],p[2:]
 '''
 class Solution:
     # @return a boolean
@@ -29,17 +41,17 @@ class Solution:
         def compress(p):
             i = 0
             while i < len(p)-3:
-                if (p[i] == p[i+2] or p[i] == "." or p[i+2] == ".") and (p[i+1] == "*" and p[i+3] == "*"):
-                    contain_dot = False
-                    if p[i] == "." or p[i+2] == ".":
-                        contain_dot = True
-
-                    if contain_dot:
-                        p = p[:i] + ".*" + p[i+4:]
-                    else:
-                        p = p[:i] + p[i+2:]
-                else:
+                if p[i+1] != '*':
                     i = i + 1
+                    continue
+                if p[i+3] == '*':
+                    if p[i] == "." or p[i+2] == ".":
+                        p = p[:i] + ".*" + p[i+4:]
+                        continue
+                    elif p[i] == p[i+2]:
+                        p = p[:i] + p[i+2:]
+                        continue
+                i = i + 2
             return p
 
         def isMatch2(s, p):
@@ -58,7 +70,6 @@ class Solution:
                     return False
             if len(s) > 0 and len(p) == 0:
                 return False
-
 
             match_char = p[0]
             multi = False
@@ -87,12 +98,13 @@ class Solution:
                         break
                     i = i + 1
                 return result
+
         return isMatch2(s, compress(p))
 
 
 def main():
     s = Solution()
-    print s.isMatch("a", "ab*")
+    print s.isMatch("aa", "a*")
 
 
 if __name__ == "__main__":
