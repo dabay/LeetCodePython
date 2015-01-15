@@ -9,7 +9,7 @@ Find two lines, which together with x-axis forms a container, such that the cont
 Note: You may not slant the container.
 
 ===Comments by Dabay===
-这道题感觉很经典，但是我还是不知道为什么可以。估计就记住解法吧，茴香豆的写法也会一种。
+这道题很经典，但是我还是不知道为什么可以。姑且就记住解法吧，茴香豆的写法也会一种。
 
 两个指针，一个方向从左到右，另一个方向从右到左。
 计算最大容量，更新max_area。
@@ -20,8 +20,7 @@ class Solution:
     # @return an integer
     def maxArea(self, height):
         max_area = 0
-        i = 0
-        j = len(height) - 1
+        i, j = 0, len(height) - 1
         while i < j:
             s = min(height[i], height[j]) * (j-i)
             max_area = max(s, max_area)
