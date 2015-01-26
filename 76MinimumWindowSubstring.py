@@ -5,7 +5,8 @@ __author__ = 'dabay.wang@gmail.com'
 145: Minimum Window Substring
 https://oj.leetcode.com/problems/minimum-window-substring/
 
-Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
+Given a string S and a string T, find the minimum window in S which will
+contain all the characters in T in complexity O(n).
 
 For example,
 S = "ADOBECODEBANC"
@@ -19,10 +20,12 @@ If there are multiple such windows, you are guaranteed that there will always be
 ===Comments by Dabay===
 
 记录每一个关键词出现的位置.
-先把满足条件的字符串找出来，然后压缩这个字符串。
+先把满足条件的字符串找出来（包含的每个关键词大于等于T中的数量）。因为满足条件的时候，最后一个是才加入的，所以肯定不能去掉，但是左边可能可以压缩。
+然后压缩这个字符串。这就是我们找到的第一个完整的包含所有关键词的第一个字符串。
 
-思路比较清晰，代码乱。
+然后，往后面寻找等于min_window中第一个关键词，如果找到了，压缩这个字符串，和之前的min_window比较。如果更小则更新。
 '''
+
 
 class Solution:
     # @return a string
@@ -41,7 +44,7 @@ class Solution:
                 else:
                     keyword_dict_string[keyword] -= 1
                     s += 1
-            return (s, e)
+            return s, e
 
         keyword_dict = {}
         for c in T:
@@ -79,18 +82,20 @@ class Solution:
             looking_for = S[keyword_postions[s]]
             i = e + 1
             if i >= len(keyword_postions):
-                return min_window
+                break
             while S[keyword_postions[i]] != looking_for:
                 keyword_dict_string[S[keyword_postions[i]]] += 1
                 i += 1
                 if i >= len(keyword_postions):
-                    return min_window
+                    break
             else:
                 keyword_dict_string[S[keyword_postions[i]]] += 1
 
             (s, e) = shrink_left(s, i, keyword_dict_string, keyword_dict, keyword_postions, S)
             if keyword_postions[e] - keyword_postions[s] + 1 < len(min_window):
                 min_window = S[keyword_postions[s]:keyword_postions[e]+1]
+
+        return min_window
 
 
 def main():
