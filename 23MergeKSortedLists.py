@@ -1,11 +1,14 @@
 # -*- coding: utf8 -*-
 '''
 __author__ = 'dabay.wang@gmail.com'
+
+23: Merge k Sorted Lists
 https://oj.leetcode.com/problems/merge-k-sorted-lists/
 
 Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
 
 ===Comments by Dabay===
+
 递归：每次把lists折半，分别处理左右两个子lists，然后merge。和归并排序的算法一样。
 时间复杂度为NlgN
 '''

@@ -17,8 +17,14 @@ Given height = [2,1,5,6,2,3],
 return 10.
 
 ===Comments by Dabay===
-遍历每个元素，每次往左右两边扩展，直到比这个元素小。然后计算更更新largest。
-但是这个解法Time Limit Exceeded.
+http://www.tuicool.com/articles/7zUvmy
+O(N)的解法，不服不行。
+注意几个细节：
+    - 栈中存储下标（栈中的元素对应的高度从低到高）
+    - 为了能让全部出栈，在height后面加一个元素0
+    - 如果出栈一个元素之后
+        -   栈为空，说明这个下标对应的高度最矮的，其宽度应该是下标0到i-1，即i
+        -   栈不为空，说明前面有更矮的，这里只需要计算local peak冒出来的一部分即可
 '''
 
 class Solution:
@@ -26,22 +32,27 @@ class Solution:
     # @return an integer
     def largestRectangleArea(self, height):
         largest = 0
-        i = 0
+        stack = [0]
+        i = 1
+        height.append(0)
         while i < len(height):
-            m = n = i
-            h = height[i]
-            while m-1>=0 and height[m-1]>=h:
-                m -= 1
-            while n+1<len(height) and height[n+1]>=h:
-                n += 1
-            largest = max(largest, h * (n-m+1))
-            i += 1
+            while len(stack)>0 and height[stack[-1]] > height[i]:
+                index = stack.pop()
+                h = height[index]
+                if len(stack) == 0:
+                    area = i * h
+                else:
+                    area = (i-1-stack[-1])*h
+                largest = max(largest, area)
+            else:
+                stack.append(i)
+                i += 1
         return largest
 
 
 def main():
     sol = Solution()
-    height = [2,1,5,6,2,3]
+    height = [0,3,2,5]
     print sol.largestRectangleArea(height)
 
 
