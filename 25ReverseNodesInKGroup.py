@@ -22,8 +22,12 @@ For k = 3, you should return: 3->2->1->4->5
 前面加一个辅助head。
 每次处理k个元素，如果最后剩下的元素不足k，直接加到末尾。
 
-reverse处理k个元素的时候，需要两个指向第一个元素的前一个指针，以及 最后一个元素的后一个指针。
+reverse处理k个元素的时候，需要两个指针：指向第一个元素的前一个指针，以及 最后一个元素的后一个指针。
 记得返回新的reverse之后的最后一个指针作为，下一次reverse的第一个参数。
+
+reverse的时候用三个指针分别代表原链表中的pre,cur,next。
+
+因为每次都先找到需要k个元素的区间，然后在调整指针，相当于遍历两次了，应该再改进一些...
 '''
 
 # Definition for singly-linked list.
@@ -39,17 +43,17 @@ class Solution:
     # @return a ListNode
     def reverseKGroup(self, head, k):
         def reverse(previous, after):
-            ret = pre = previous.next
+            new_previous = previous.next
+            pre = previous.next
             cur = pre.next
-            pre.next = after
             while cur != after:
                 next = cur.next
                 cur.next = pre
                 pre = cur
                 cur = next
             previous.next = pre
-            return ret
-
+            new_previous.next = after
+            return new_previous
 
         previous = new_head = ListNode(0)
         new_head.next = n = head
@@ -63,18 +67,21 @@ class Solution:
         return new_head.next
 
 
-def main():
-    s = Solution()
-    ln = ListNode(1)
-    ln.next = ListNode(2)
-    ln.next.next = ListNode(3)
-    ln.next.next.next = ListNode(4)
-    ln.next.next.next.next = ListNode(5)
-    node = s.reverseKGroup(ln, 2)
+def print_listnode(node):
     while node:
         print "%s->" % node.val,
         node = node.next
-    print "None"
+    print "END"
+
+
+def main():
+    sol = Solution()
+    node = root = ListNode(1)
+    for i in xrange(2, 15):
+        node.next = ListNode(i)
+        node = node.next
+    print_listnode(root)
+    print_listnode(sol.reverseKGroup(root, 1))
 
 
 if __name__ == "__main__":
