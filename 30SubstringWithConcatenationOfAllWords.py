@@ -1,6 +1,8 @@
 # -*- coding: utf8 -*-
 '''
 __author__ = 'dabay.wang@gmail.com'
+
+30: Substring with Concatenation of All Words
 https://oj.leetcode.com/problems/substring-with-concatenation-of-all-words/
 
 You are given a string, S, and a list of words, L, that are all of the same length.
