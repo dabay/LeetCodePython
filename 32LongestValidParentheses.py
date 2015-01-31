@@ -1,6 +1,8 @@
 # -*- coding: utf8 -*-
 '''
 __author__ = 'dabay.wang@gmail.com'
+
+32: Longest Valid Parentheses
 https://oj.leetcode.com/problems/longest-valid-parentheses/
 
 Given a string containing just the characters '(' and ')',
@@ -12,7 +14,8 @@ Another example is ")()())", where the longest valid parentheses substring is "(
 
 ===Comments by Dabay===
 用一个stack来记录左括号'（'的位置；
-start来记录这个左括号之前自封闭的位置。也就是说，实际上匹配到这个左括号的时候，计算右括号到start的长度。
+start来记录这个左括号之前自封闭的起始位置。也就是说，实际上匹配到这个左括号的时候，计算右括号到start的长度。
+例如：字符串“（）（）”，当遍历到第二个“（”的时候，实际上入栈的位置是0而不是2。
 
 当遇到右括号'('的时候，
     把i和start中小的那个数入栈；同时，start更新指向i的下一个位置。
