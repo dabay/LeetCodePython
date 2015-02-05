@@ -2,7 +2,7 @@
 '''
 __author__ = 'dabay.wang@gmail.com'
 
-37: Count and Say
+38: Count and Say
 https://oj.leetcode.com/problems/count-and-say/
 
 The count-and-say sequence is the sequence of integers beginning as follows:
