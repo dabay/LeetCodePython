@@ -1,17 +1,17 @@
 # -*- coding: utf8 -*-
 '''
 __author__ = 'dabay.wang@gmail.com'
+
+37: Sudoku Solver
 https://oj.leetcode.com/problems/sudoku-solver/
-Sudoku Solver
 
 Write a program to solve a Sudoku puzzle by filling the empty cells.
-
 Empty cells are indicated by the character '.'.
-
 You may assume that there will be only one unique solution.
+
 ===Comments by Dabay===
-把需要填写的空缺记录下来。
-一个个的试，深度优先算法，试的时候计算可能的数字。
+逐行扫描，当遇到“.”的时候，尝试每一个可能的valid_num。
+如果能DFS到底，就return True；否则，把这个位置重置为“.”，进行下一次尝试。
 '''
 
 class Solution:
@@ -19,45 +19,46 @@ class Solution:
     # Solve the Sudoku by modifying the input board in-place.
     # Do not return any value.
     def solveSudoku(self, board):
-        def cell_nums(row, col, board):
-            nums = [str(i) for i in xrange(1,10)]
-            r_div = int(row / 3) * 3
-            c_div = int(col / 3) * 3
-            for r in xrange(r_div, r_div+3):
-                for c in xrange(c_div, c_div+3):
-                    x = board[r][c]
-                    if x in nums:
-                        nums.remove(x)
-            for i in xrange(9):
-                if board[row][i] in nums:
-                    nums.remove(board[row][i])
-                if board[i][col] in nums:
-                    nums.remove(board[i][col])
-            return nums
+        def next_position(position):
+            i, j = position
+            j += 1
+            if j >= 9:
+                j -= 9
+                i += 1
+            return (i, j)
 
-        def fill(to_fill, board, res):
-            if len(to_fill) == 0:
-                res[0] = True
-                return
+        def valid_nums(board, position):
+            i, j = position
+            s = [str(n) for n in xrange(1, 10)]
+            for row in xrange(9):
+                if board[row][j] != '.' and board[row][j] in s:
+                    s.remove(board[row][j])
+            for col in xrange(9):
+                if board[i][col] != '.' and board[i][col] in s:
+                    s.remove(board[i][col])
+            ii = i / 3
+            jj = j / 3
+            for row in xrange(3):
+                for col in xrange(3):
+                    if board[ii*3+row][jj*3+col] != '.' and board[ii*3+row][jj*3+col] in s:
+                        s.remove(board[ii*3+row][jj*3+col])
+            return s
 
-            (row, col) = to_fill.pop(0)
-            possible_nums = cell_nums(row, col, board)
-            for num in possible_nums:
-                board[row][col] = num
-                fill(to_fill, board, res)
-                if res[0] == True:
-                    return
-            to_fill.insert(0, (row, col))
-            board[row][col] = "."
+        def solveSudoku2(board, position):
+            i, j = position
+            if i == 9:
+                return True
+            if board[i][j] == '.':
+                nums = valid_nums(board, position)
+                for n in nums:
+                    board[i][j] = n
+                    if solveSudoku2(board, next_position(position)) is True:
+                        return True
+                    board[i][j] = '.'
+            else:
+                return solveSudoku2(board, next_position(position))
 
-
-        to_fill = []
-        for r in xrange(len(board)):
-            for c in xrange(len(board[r])):
-                if board[r][c] == ".":
-                    to_fill.append((r,c))
-        res = [False]
-        fill(to_fill, board, res)
+        solveSudoku2(board, (0, 0))
 
 
 def print_board(board):
@@ -82,6 +83,7 @@ def main():
         [".",".",".","4","1","9",".",".","5"],
         [".",".",".",".","8",".",".","7","9"]
     ]
+    print_board(board)
     s.solveSudoku(board)
     print_board(board)
 
@@ -91,5 +93,7 @@ if __name__ == "__main__":
     start = time.clock()
     main()
     print "%s sec" % (time.clock() - start)
+
+
 
 
