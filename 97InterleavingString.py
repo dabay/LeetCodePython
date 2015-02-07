@@ -14,12 +14,11 @@ When s3 = "aadbbcbcac", return true.
 When s3 = "aadbbbaccc", return false.
 
 ===Comments by Dabay===
-开始准备记录一个在s1和s2中移动的指针组合，匹配每一个s3中字符之后，更新这个指针组合。
-但是当s1和s2为 "aaaaaaaaaa"，s3 = "aaaaaaaaaaaaaaaaaaaa"的时候，这个组合数量达到了18w+。太耗内存了。
+递归的时间复杂度比较高。
 
-递归会好一些，但是相信时间复杂度还是比较高。
+记录一个在s1和s2中移动的指针组合，匹配每一个s3中字符之后，更新这个可能的指针组合。
 
-最后还得用动态规划。
+用动态规划是正统的解法。
 判断的res[i][j]的时候，即判断 s3中前i+j个字符是否 与 s1中前i个与s2中前j个字符 匹配（这里i代表s1中第i个，j代表s2中第j个）：
 两种情况设置为True:
     1. s3中第i+j个字符与s1中第i个字符匹配，而且s3中前i+j-1个字符 与 s1中前i-1个字符和s2中前j个字符 匹配
@@ -29,6 +28,28 @@ When s3 = "aadbbbaccc", return false.
 class Solution:
     # @return a boolean
     def isInterleave(self, s1, s2, s3):
+        if len(s1) + len(s2) != len(s3):
+            return False
+        positions = [(0, 0)]
+        for char in s3:
+            new_positions = []
+            for position in positions:
+                i, j = position
+                if i < len(s1) and s1[i] == char:
+                    new_position = (i+1, j)
+                    if new_position not in new_positions:
+                        new_positions.append(new_position)
+                if j < len(s2) and s2[j] == char:
+                    new_position = (i, j+1)
+                    if new_position not in new_positions:
+                        new_positions.append(new_position)
+            positions = new_positions
+            if len(new_positions) == 0:
+                return False
+        return True
+
+
+    def isInterleave2(self, s1, s2, s3):
         if len(s1) + len(s2) != len(s3):
             return False
         res = []
@@ -55,9 +76,9 @@ class Solution:
 
 def main():
     sol = Solution()
-    s1 = "aabcc"
-    s2 = "dbbca"
-    s3 = "aadbbcbcac"
+    s1 = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    s2 = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    s3 = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     print sol.isInterleave(s1, s2, s3)
 
 
