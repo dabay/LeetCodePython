@@ -2,8 +2,8 @@
 '''
 __author__ = 'dabay.wang@gmail.com'
 
-126: Word Ladder II
-https://leetcode.com/problems/word-ladder-ii/
+50: Pow(x, n)
+https://leetcode.com/problems/powx-n/
 
 Implement pow(x, n).
 
@@ -29,7 +29,6 @@ class Solution:
             return self.pow(x*x, n/2) * x
         else:
             return self.pow(x*x, n/2)
-
 
 
 def main():
