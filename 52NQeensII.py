@@ -6,8 +6,8 @@ __author__ = 'dabay.wang@gmail.com'
 https://oj.leetcode.com/problems/n-queens-ii/
 
 Follow up for N-Queens problem.
-
 Now, instead outputting board configurations, return the total number of distinct solutions.
+
 ===Comments by Dabay===
 不知道和N Queen相比有没有简单很多的方法。我这里的解法思路和N Queen一样的。
 
@@ -59,7 +59,6 @@ class Solution:
                     board[r][c] = 'Q'
                     DFS(board, queens-1, res)
                     board[r][c] = '.'
-
 
         board = [['.'] * n for _ in xrange(n)]
         #print board
